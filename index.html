@@ -1,0 +1,252 @@
+<!doctype html>
+<html data-theme="dark" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sinbar Growth Engine — Live Pipeline</title>
+<style>
+:root{--bg:#0e1116;--panel:#151a22;--panel2:#1b212c;--border:#2a3140;--text:#e2e6ee;--muted:#9aa3b2;
+--accent:#4ea1ff;--high:#37c99e;--med:#e8b34b;--low:#e07a5f;--chip:#232b38;--chip-hover:#2d3748;
+--row-alt:#12171f;--link:#7ab8ff}
+:root[data-theme="light"]{--bg:#f5f6f9;--panel:#ffffff;--panel2:#eef1f6;--border:#d7dde7;--text:#1c2430;--muted:#5c6675;
+--accent:#0b62d6;--high:#0e8f6e;--med:#a06a00;--low:#c0392b;--chip:#e6ebf3;--chip-hover:#dbe3ef;
+--row-alt:#f2f4f9;--link:#0b62d6}
+*{box-sizing:border-box}html{color-scheme:dark}html[data-theme=light]{color-scheme:light}
+body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 "Segoe UI",system-ui,-apple-system,sans-serif}
+.wrap{max-width:1500px;margin:0 auto;padding:20px 24px 60px}
+h1{font-size:22px;margin:0 0 4px}h1 .n{color:var(--accent)}
+.sub{color:var(--muted);font-size:13px;margin-bottom:16px}
+.summary{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.stat{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:8px 14px;font-size:12.5px}
+.stat b{font-size:17px;display:block;color:var(--accent)}
+.stat.click{cursor:pointer;transition:border-color .15s}.stat.click:hover{border-color:var(--accent)}
+.stat.on{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+.tabs{display:flex;gap:6px;margin-bottom:12px}
+.tab{border:1px solid var(--border);background:var(--panel);color:var(--text);border-radius:8px;
+padding:7px 16px;font-size:13.5px;cursor:pointer;font-weight:600}
+.tab.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.controls{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:14px}
+#search{width:100%;padding:9px 12px;border-radius:7px;border:1px solid var(--border);background:var(--panel2);
+color:var(--text);font-size:14px;outline:none}#search:focus{border-color:var(--accent)}
+.filterrow{display:flex;flex-wrap:wrap;gap:14px;margin-top:10px;align-items:flex-start}
+.fgroup{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.flabel{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-right:2px}
+.chip{border:1px solid var(--border);background:var(--chip);color:var(--text);border-radius:14px;
+padding:3px 11px;font-size:12px;cursor:pointer;user-select:none}
+.chip:hover{background:var(--chip-hover)}.chip.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.tablebox{overflow-x:auto;border:1px solid var(--border);border-radius:10px;background:var(--panel)}
+table{border-collapse:collapse;width:100%;min-width:1400px}
+th{position:sticky;top:0;background:var(--panel2);text-align:left;padding:9px 10px;font-size:11.5px;
+text-transform:uppercase;letter-spacing:.05em;color:var(--muted);border-bottom:2px solid var(--border);
+cursor:pointer;white-space:nowrap;z-index:2}
+th:hover{color:var(--accent)}.th .arrow{font-size:10px;margin-left:3px}
+td{padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:top;font-size:13px}
+tbody tr:nth-child(even){background:var(--row-alt)}tbody tr:hover{background:var(--chip-hover)}
+td.tt{font-weight:600;min-width:220px}td.tt a{color:var(--link);text-decoration:none}
+td.tt a:hover{text-decoration:underline}
+td.due{white-space:nowrap;font-weight:600}.due-soon{color:var(--low)}.due-ok{color:var(--high)}
+td.sc{font-weight:700;white-space:nowrap}
+.sc-hi{color:var(--high)}.sc-md{color:var(--med)}.sc-lo{color:var(--low)}
+.cat{font-size:11px;color:var(--muted)}
+.badge{display:inline-block;border-radius:10px;padding:1px 9px;font-size:11px;font-weight:600;white-space:nowrap}
+.b-Federal{background:color-mix(in srgb,var(--accent) 18%,transparent);color:var(--accent)}
+.b-Education{background:color-mix(in srgb,var(--high) 18%,transparent);color:var(--high)}
+.b-State{background:color-mix(in srgb,var(--med) 18%,transparent);color:var(--med)}
+.b-Local{background:color-mix(in srgb,var(--med) 18%,transparent);color:var(--med)}
+.foot{color:var(--muted);font-size:12px;margin-top:14px}
+#count{color:var(--accent);font-weight:600}
+#themeBtn{position:fixed;top:14px;right:16px;background:var(--panel);border:1px solid var(--border);
+color:var(--text);border-radius:8px;padding:6px 12px;cursor:pointer;font-size:13px;z-index:5}
+@media(max-width:800px){.wrap{padding:14px 10px 40px}}
+</style>
+</head>
+<body>
+<button id="themeBtn" title="Toggle theme">◐</button>
+<div class="wrap">
+<h1>Sinbar <span class="n">Growth Engine</span> <span class="n" style="color:var(--high)">LIVE</span></h1>
+<div class="sub">Public-sector procurement pipeline (Module A live; Modules B–E commercial leads load as researched) ·
+<span id="scannedTxt">awaiting first refresh</span> · click headers to sort · type to search · cards &amp; chips filter · auto-reloads every 5 min</div>
+<div class="summary" id="summary"></div>
+<div id="nodata" style="display:none;background:var(--panel);border:1px solid var(--low);border-radius:8px;padding:10px 14px;margin-bottom:14px;color:var(--low);font-weight:600">No data loaded — run refresh.ps1 (or double-click the launcher) to generate data.js, then reload this page.</div>
+<div class="tabs">
+<button class="tab on" data-tab="opps">Procurement Opportunities</button>
+<button class="tab" data-tab="leads">Commercial Leads</button>
+</div>
+<div class="controls">
+<input id="search" type="search" placeholder="Search title, agency, scope, location…">
+<div class="filterrow" id="filterrow"></div>
+</div>
+<div class="tablebox">
+<table><thead><tr id="theadRow"></tr></thead><tbody id="tbody"></tbody></table>
+</div>
+<div class="foot">Showing <span id="count"></span> of <span id="totalN">0</span> opportunities · <span id="scannedFoot">awaiting first refresh</span> · <span id="srcNote">—</span></div>
+</div>
+<script src="data.js"></script>
+<script>
+let OPPS = window.SINBAR_OPPS || [];
+let LEADS = window.SINBAR_LEADS || [];
+let META = window.SINBAR_META || {};
+const TODAY = (() => { const d = new Date(); d.setHours(23, 59, 59, 999); return d; })();
+const state = {q:"", level:new Set(), band:new Set(), tab:"opps", sortKey:"due", sortDir:1};
+let LEVELS=[], statEls=[];
+const CONFS=["high","medium","low"];
+
+const OPP_COLS=[
+ {k:"score",h:"Score"},{k:"due_date",h:"Due"},{k:"agency",h:"Agency / Issuer"},
+ {k:"title",h:"Opportunity"},{k:"level",h:"Level"},{k:"location",h:"Location"},
+ {k:"sinbar_fit",h:"Sinbar fit"},{k:"next_action",h:"Next action"},{k:"notes",h:"Notes"}];
+const LEAD_COLS=[
+ {k:"score",h:"Score"},{k:"trigger",h:"Trigger"},{k:"name",h:"Name"},{k:"segment",h:"Segment"},
+ {k:"region",h:"Region"},{k:"owner_mgmt",h:"Owner / Mgmt"},{k:"decision_maker",h:"Decision-maker"},
+ {k:"phone",h:"Phone"},{k:"email_status",h:"Email status"},{k:"evidence",h:"Evidence"},
+ {k:"sinbar_angle",h:"Sinbar angle"},{k:"outreach_status",h:"Outreach"}];
+
+function chip(label,on,cb){const b=document.createElement("button");b.className="chip"+(on?" on":"");
+b.textContent=label;b.onclick=()=>{cb(b);syncUI()};return b}
+
+function daysLeft(dstr){if(!dstr)return null;const d=new Date(dstr+"T23:59:59");return Math.floor((d-TODAY)/86400000)}
+
+function currentRows(){
+ const arr=state.tab==="opps"?OPPS:LEADS;
+ return arr.filter(d=>{
+  if(state.level.size&&!state.level.has(state.tab==="opps"?d.level:d.segment))return false;
+  if(state.band.size){
+   let ok=false;
+   if(state.band.has("85+")&&d.score>=85)ok=true;
+   if(state.band.has("70-84")&&d.score>=70&&d.score<85)ok=true;
+   if(state.band.has("Due≤7d")&&daysLeft(d.due_date||d.due)!=null&&daysLeft(d.due_date||d.due)>=0&&daysLeft(d.due_date||d.due)<=7)ok=true;
+   if(!ok)return false;
+  }
+  if(state.q){const hay=Object.keys(d).map(k=>String(d[k]||"")).join(" ").toLowerCase();if(!hay.includes(state.q))return false}
+  return true}).sort((a,b)=>{
+  const k=state.sortKey==="due"?(state.tab==="opps"?"due_date":"due"):state.sortKey;
+  const x=a[k]||"9999-12-31",y=b[k]||"9999-12-31";
+  if(k==="score"){const nx=Number(x)||0,ny=Number(y)||0;return (nx-ny)*state.sortDir}
+  return (x<y?-1*state.sortDir:x>y?1*state.sortDir:0);
+ });
+}
+
+function buildHead(){
+ const tr=document.getElementById("theadRow");tr.replaceChildren();
+ (state.tab==="opps"?OPP_COLS:LEAD_COLS).forEach(c=>{
+  const th=document.createElement("th");th.textContent=c.h;
+  const ar=document.createElement("span");ar.className="arrow";
+  if(state.sortKey===c.k)ar.textContent=state.sortDir===1?"▲":"▼";
+  th.appendChild(ar);th.onclick=()=>{const k=c.k;
+   if(state.sortKey===k)state.sortDir*=-1;else{state.sortKey=k;state.sortDir=1}
+   buildHead();render()};tr.appendChild(th)});
+}
+
+function cell(inner,cls){const c=document.createElement("td");if(cls_(c,cls))0;c.className=cls||"";c.append(inner);return c}
+function cls_(){} // no-op
+function td(cls,inner){const c=document.createElement("td");if(cls)c.className=cls;c.append(inner);return c}
+
+function render(){
+ const r=currentRows();
+ document.getElementById("count").textContent=r.length;
+ const tb=document.getElementById("tbody");tb.replaceChildren();
+ r.forEach(d=>{
+  const tr=document.createElement("tr");
+  const dueRaw=state.tab==="opps"?d.due_date:(d.due||d.due_date);
+  const dl=daysLeft(dueRaw);
+  const dueDiv=document.createElement("div");dueDiv.textContent=dueRaw||"—";
+  const sub=document.createElement("div");sub.className="cat";
+  if(dl!=null){sub.textContent=dl<0?"PAST DUE":(dl+" days left");dueDiv.classList.add(dl<=7?"due-soon":"due-ok")}
+  dueDiv.appendChild(sub);
+  const sc=document.createElement("span");sc.className="sc "+(d.score>=85?"sc-hi":d.score>=70?"sc-md":"sc-lo");sc.textContent=d.score;
+  if(state.tab==="opps"){
+   tr.appendChild(td("sc",sc));
+   tr.appendChild(td("due",dueDiv));
+   const ag=document.createElement("div");ag.textContent=d.agency||"";
+   const j=document.createElement("div");j.className="cat";j.textContent=(d.level||"")+" · "+(d.jurisdiction||"");ag.appendChild(j);
+   tr.appendChild(td(null,ag));
+   const tt=document.createElement("div");tt.textContent=d.title;
+   const sn=document.createElement("div");sn.className="cat";sn.textContent=d.solicitation_number||"";tt.appendChild(sn);
+   tr.appendChild(td("tt",tt));
+   tr.appendChild(td(null,d.location||""));
+   const fit=document.createElement("div");fit.textContent=d.sinbar_fit||"";
+   const na=document.createElement("div");na.className="cat";na.textContent=d.next_action||"";fit.appendChild(na);
+   tr.appendChild(td(null,fit));
+   tr.appendChild(td(null,d.notes||""));
+  }else{
+   tr.appendChild(td("sc",sc));
+   tr.appendChild(td(null,d.trigger||""));
+   tr.appendChild(td("tt",d.name||""));
+   tr.appendChild(td(null,d.segment||""));
+   tr.appendChild(td(null,d.region||""));
+   tr.appendChild(td(null,d.owner_mgmt||""));
+   tr.appendChild(td(null,d.decision_maker||""));
+   tr.appendChild(td(null,d.phone||""));
+   tr.appendChild(td(null,d.email_status||""));
+   tr.appendChild(td(null,d.evidence||""));
+   tr.appendChild(td(null,d.sinbar_angle||""));
+   tr.appendChild(td(null,d.outreach_status||""));
+  }
+  tb.appendChild(tr)});
+}
+
+function buildSummary(){
+ LEVELS=[...new Set(OPPS.map(r=>r.level))];
+ const sm=document.getElementById("summary");sm.replaceChildren();
+ statEls=[];
+ const due7=OPPS.filter(d=>{const dl=daysLeft(d.due_date);return dl!=null&&dl>=0&&dl<=7}).length;
+ const stats=[["Total opportunities",OPPS.length,null],
+  ["Outreach-ready 85+",OPPS.filter(d=>d.score>=85).length,{kind:"band",val:"85+"}],
+  ["Due ≤7 days",due7,{kind:"band",val:"Due≤7"}],
+  ["Emails sent",(META&&META.emailsSent)||0,null]];
+ stats.forEach(([l,v,act])=>{const s=document.createElement("div");s.className="stat"+(act?" click":"");
+  s.onclick=()=>{if(!act){state.band.clear();state.level.clear();state.q="";document.getElementById("search").value="";syncUI();return}
+   state.band.has(act.val)?state.band.delete(act.val):state.band.add(act.val);syncUI()};
+  const b=document.createElement("b");b.textContent=v;const t=document.createElement("span");t.textContent=l;
+  s.appendChild(b);s.appendChild(t);sm.appendChild(s);
+  if(act)statEls.push([s,act])});
+}
+function syncUI(){
+ const fr=document.getElementById("filterrow");fr.replaceChildren();
+ const mk=(labelText,vals,set,toggle)=>{const g=document.createElement("div");g.className="fgroup";
+  const l=document.createElement("span");l.className="flabel";l.textContent=labelText;fr.appendChild(l);
+  vals.forEach(v=>fr.appendChild(chip(v,set.has(v),b=>{b.classList.contains("on")?set.add(v):set.delete(v)})))};
+ mk("Level",LEVELS,state.level);
+ mk("Score",["85+","70-84","Due≤7"],state.band);
+ const g=document.createElement("div");g.className="fgroup";
+ const l=document.createElement("span");l.className="flabel";l.textContent="Reset";fr.appendChild(l);
+ const rb=document.createElement("button");rb.className="chip";rb.textContent="✕ clear all";
+ rb.onclick=()=>{state.band.clear();state.level.clear();state.q="";document.getElementById("search").value="";syncUI()};
+ fr.appendChild(rb);
+ statEls.forEach(([el,act])=>el.classList.toggle("on",state.band.has(act.val)));
+ render();
+}
+function mk(){/* replaced below */}
+function updateMeta(){
+ const m=META||{};
+ const when=m.scanned?("scanned "+m.scanned):"awaiting first refresh";
+ document.getElementById("scannedTxt").textContent=when;
+ document.getElementById("scannedFoot").textContent=when;
+ document.getElementById("totalN").textContent=OPPS.length;
+ document.getElementById("nodata").style.display=OPPS.length?"none":"block";
+ let src="live: SAM.gov ×"+(m.samNew!=null?m.samNew:0)+" · USAC ×"+(m.usacNew!=null?m.usacNew:0)+" · NY/NJ/CT pipeline";
+ if(m.samError)src+=" · ⚠ SAM.gov: "+String(m.samError).slice(0,100);
+ if(m.usacError)src+=" · ⚠ USAC: "+String(m.usacError).slice(0,90);
+ document.getElementById("srcNote").textContent=src;
+}
+function init(){
+ document.getElementById("search").addEventListener("input",e=>{state.q=e.target.value.toLowerCase().trim();render()});
+ document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{
+  document.querySelectorAll(".tab").forEach(x=>x.classList.remove("on"));
+  t.classList.add("on");state.tab=t.dataset.tab;state.sortKey="due";state.sortDir=1;
+  buildHead();buildSummary();syncUI()});
+ const tBtn=document.getElementById("themeBtn");
+ tBtn.onclick=()=>{const cur=document.documentElement.dataset.theme||"dark";
+  const next=cur==="dark"?"light":"dark";document.documentElement.dataset.theme=next;
+  try{localStorage.setItem("sinbar-theme",next)}catch(e){}};
+ try{const t=localStorage.getItem("sinbar-theme");if(t)document.documentElement.dataset.theme=t}catch(e){}
+ setInterval(()=>{const s=document.createElement("script");s.src="data.js?ts="+Date.now();
+  s.onload=()=>{OPPS=window.SINBAR_OPPS||OPPS;META=window.SINBAR_META||META;
+   buildSummary();syncUI();updateMeta()};
+  document.head.appendChild(s)},300000);
+ buildHead();buildSummary();syncUI();updateMeta();
+}
+init();
+</script>
+</body>
+</html>
