@@ -88,6 +88,7 @@ color:var(--text);border-radius:8px;padding:6px 12px;cursor:pointer;font-size:13
 <button class="tab" data-view="evidence">Evidence</button>
 <button class="tab" data-view="outreach">Outreach</button>
 <button class="tab" data-view="changes">Changes</button>
+<button class="tab" data-view="agents">Agent Work</button>
 </div>
 <div class="controls">
 <div class="ctlrow">
@@ -123,7 +124,9 @@ const COLS = {
   {k:"sender",h:"Sender identity"},{k:"result",h:"Send result"},{k:"sent",h:"Date/time"},
   {k:"next_followup",h:"Next follow-up"},{k:"exception",h:"Exception reason"}],
  changes:[{k:"record",h:"Record"},{k:"track",h:"Track"},{k:"state",h:"State"},{k:"event",h:"Latest event"},
-  {k:"edate",h:"Event date"},{k:"updated",h:"Updated"},{k:"url",h:"Link"}]
+  {k:"edate",h:"Event date"},{k:"updated",h:"Updated"},{k:"url",h:"Link"}],
+ agents:[{k:"key",h:"Key"},{k:"title",h:"Issue"},{k:"mstatus",h:"Status"},{k:"assignee",h:"Assignee"},
+  {k:"updated",h:"Last activity"}]
 };
 
 function el(tag,cls,txt){const e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e}
@@ -189,6 +192,10 @@ function rowsFor(view){
    return{record:d.title,track:d.track||"procurement",state:changeState(d),event:le.event,
     edate:le.date,updated:d.updated_at||d.first_seen||"",url:d.url||"",_d:d}})
   .sort((a,b)=>String(b.edate||"").localeCompare(String(a.edate||"")));
+ if(view==="agents"){const m=META&&META.multica;
+  if(!m||!m.connected||!m.recent)return [];
+  return m.recent.map(r=>({key:r.key||"",title:r.title||"",mstatus:r.status||"",
+   assignee:r.assignee||"",updated:String(r.updated||"").slice(0,10)}));}
  return [];
 }
 
@@ -199,6 +206,9 @@ function cellFor(k,row,view){
   (l==="Outreach Ready"?"bg-ready":l==="Verified Wi-Fi Pain"?"bg-pain":"bg-research"),l)))}
  else if(k==="state"){td.appendChild(el("span","badge "+
   (row.state==="New"?"bg-new":row.state==="Updated"?"bg-updated":"bg-unchanged"),row.state))}
+ else if(k==="mstatus"){const s=row.mstatus||"";
+  td.appendChild(el("span","badge "+(s==="done"?"bg-unchanged":
+   (s==="in_progress"||s==="in_review"?"bg-updated":"bg-research")),s))}
  else if((k==="url"||k==="source")&&row[k]){
   const a=document.createElement("a");a.href=row[k];a.target="_blank";a.rel="noopener";
   a.textContent=(view==="evidence"?"Open source":"Open")+" ↗";td.appendChild(a)}
@@ -276,6 +286,16 @@ function renderOverview(vb){
   r.appendChild(el("span","pmeta",labels(d).join(" · ")+" · "+(d.location||d.jurisdiction||"")));
   p2.appendChild(r)});
  vb.appendChild(p2);
+ const mc=META&&META.multica;
+ const p3=el("div","panel");p3.appendChild(el("h3",null,"Multica agent work"));
+ if(!mc||!mc.connected){p3.appendChild(el("div","muted","Multica agents not connected"))}
+ else{p3.appendChild(el("div","muted",(mc.open||0)+" open · "+(mc.done||0)+" done · "+(mc.autopilots||0)+" autopilot(s) — next run 8:17 AM"));
+  (mc.recent||[]).forEach(r=>{const rr=el("div","prow");
+   rr.appendChild(el("span","psc",r.key||""));
+   rr.appendChild(el("span","tt ptitle",r.title||"—"));
+   rr.appendChild(el("span","pmeta",(r.status||"")+(r.assignee?" · "+r.assignee:"")+" · "+String(r.updated||"").slice(0,10)));
+   p3.appendChild(rr)})}
+ vb.appendChild(p3);
 }
 
 function buildFilters(){
