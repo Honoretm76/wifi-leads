@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Sinbar Growth Engine — Live Pipeline</title>
+<title>Sinbar | Lead &amp; Procurement Intelligence</title>
 <style>
 :root{--bg:#0e1116;--panel:#151a22;--panel2:#1b212c;--border:#2a3140;--text:#e2e6ee;--muted:#9aa3b2;
 --accent:#4ea1ff;--high:#37c99e;--med:#e8b34b;--low:#e07a5f;--chip:#232b38;--chip-hover:#2d3748;
@@ -14,47 +14,61 @@
 *{box-sizing:border-box}html{color-scheme:dark}html[data-theme=light]{color-scheme:light}
 body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 "Segoe UI",system-ui,-apple-system,sans-serif}
 .wrap{max-width:1500px;margin:0 auto;padding:20px 24px 60px}
-h1{font-size:22px;margin:0 0 4px}h1 .n{color:var(--accent)}
+h1{font-size:21px;margin:0 0 4px}h1 .n{color:var(--accent)}
 .sub{color:var(--muted);font-size:13px;margin-bottom:16px}
-.summary{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
-.stat{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:8px 14px;font-size:12.5px}
-.stat b{font-size:17px;display:block;color:var(--accent)}
-.stat.click{cursor:pointer;transition:border-color .15s}.stat.click:hover{border-color:var(--accent)}
-.stat.on{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
-.tabs{display:flex;gap:6px;margin-bottom:12px}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
 .tab{border:1px solid var(--border);background:var(--panel);color:var(--text);border-radius:8px;
-padding:7px 16px;font-size:13.5px;cursor:pointer;font-weight:600}
+padding:7px 15px;font-size:13.5px;cursor:pointer;font-weight:600}
 .tab.on{background:var(--accent);border-color:var(--accent);color:#fff}
 .controls{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:14px}
-#search{width:100%;padding:9px 12px;border-radius:7px;border:1px solid var(--border);background:var(--panel2);
+.ctlrow{display:flex;gap:10px;align-items:center}
+#search{flex:1;padding:9px 12px;border-radius:7px;border:1px solid var(--border);background:var(--panel2);
 color:var(--text);font-size:14px;outline:none}#search:focus{border-color:var(--accent)}
+#csvBtn{background:var(--accent);border:0;color:#fff;border-radius:7px;padding:9px 14px;font-size:13px;
+font-weight:600;cursor:pointer;white-space:nowrap}#csvBtn:hover{filter:brightness(1.1)}
 .filterrow{display:flex;flex-wrap:wrap;gap:14px;margin-top:10px;align-items:flex-start}
 .fgroup{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
 .flabel{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-right:2px}
 .chip{border:1px solid var(--border);background:var(--chip);color:var(--text);border-radius:14px;
 padding:3px 11px;font-size:12px;cursor:pointer;user-select:none}
 .chip:hover{background:var(--chip-hover)}.chip.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.summary{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.stat{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:8px 14px;font-size:12.5px;min-width:120px}
+.stat b{font-size:17px;display:block;color:var(--accent)}
+.panel{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:14px}
+.panel h3{margin:0 0 8px;font-size:14px}
+.prow{display:flex;gap:10px;align-items:baseline;padding:6px 0;border-bottom:1px solid var(--border);font-size:13px}
+.prow:last-child{border-bottom:0}
+.prow .psc{font-weight:700;min-width:30px;color:var(--accent)}
+.prow .ptitle{flex:1;font-weight:600}
+.prow .pmeta{color:var(--muted);font-size:12px;white-space:nowrap}
+.muted{color:var(--muted);font-size:13px}
 .tablebox{overflow-x:auto;border:1px solid var(--border);border-radius:10px;background:var(--panel)}
-table{border-collapse:collapse;width:100%;min-width:1400px}
+table{border-collapse:collapse;width:100%;min-width:1200px}
 th{position:sticky;top:0;background:var(--panel2);text-align:left;padding:9px 10px;font-size:11.5px;
 text-transform:uppercase;letter-spacing:.05em;color:var(--muted);border-bottom:2px solid var(--border);
 cursor:pointer;white-space:nowrap;z-index:2}
-th:hover{color:var(--accent)}.th .arrow{font-size:10px;margin-left:3px}
+th:hover{color:var(--accent)}th .arrow{font-size:10px;margin-left:3px}
 td{padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:top;font-size:13px}
 tbody tr:nth-child(even){background:var(--row-alt)}tbody tr:hover{background:var(--chip-hover)}
 td.tt{font-weight:600;min-width:220px}td.tt a{color:var(--link);text-decoration:none}
 td.tt a:hover{text-decoration:underline}
-td.due{white-space:nowrap;font-weight:600}.due-soon{color:var(--low)}.due-ok{color:var(--high)}
-td.sc{font-weight:700;white-space:nowrap}
+td a{color:var(--link);text-decoration:none}td a:hover{text-decoration:underline}
+.due-soon{color:var(--low)}.due-ok{color:var(--high)}
+.sc{font-weight:700;white-space:nowrap}
 .sc-hi{color:var(--high)}.sc-md{color:var(--med)}.sc-lo{color:var(--low)}
 .cat{font-size:11px;color:var(--muted)}
-.badge{display:inline-block;border-radius:10px;padding:1px 9px;font-size:11px;font-weight:600;white-space:nowrap}
-.b-Federal{background:color-mix(in srgb,var(--accent) 18%,transparent);color:var(--accent)}
-.b-Education{background:color-mix(in srgb,var(--high) 18%,transparent);color:var(--high)}
-.b-State{background:color-mix(in srgb,var(--med) 18%,transparent);color:var(--med)}
-.b-Local{background:color-mix(in srgb,var(--med) 18%,transparent);color:var(--med)}
+.badge{display:inline-block;border-radius:10px;padding:1px 9px;font-size:11px;font-weight:600;white-space:nowrap;margin:1px 3px 1px 0}
+.bg-ready{background:color-mix(in srgb,var(--high) 18%,transparent);color:var(--high)}
+.bg-research{background:color-mix(in srgb,var(--med) 18%,transparent);color:var(--med)}
+.bg-pain{background:color-mix(in srgb,var(--low) 18%,transparent);color:var(--low)}
+.bg-new{background:color-mix(in srgb,var(--high) 18%,transparent);color:var(--high)}
+.bg-updated{background:color-mix(in srgb,var(--accent) 18%,transparent);color:var(--accent)}
+.bg-unchanged{background:color-mix(in srgb,var(--muted) 18%,transparent);color:var(--muted)}
+.noresults{background:var(--panel);border:1px dashed var(--border);border-radius:10px;padding:22px;
+text-align:center;color:var(--muted);font-size:14px;font-weight:600}
+.np{color:var(--muted);font-style:italic}
 .foot{color:var(--muted);font-size:12px;margin-top:14px}
-#count{color:var(--accent);font-weight:600}
 #themeBtn{position:fixed;top:14px;right:16px;background:var(--panel);border:1px solid var(--border);
 color:var(--text);border-radius:8px;padding:6px 12px;cursor:pointer;font-size:13px;z-index:5}
 @media(max-width:800px){.wrap{padding:14px 10px 40px}}
@@ -63,178 +77,265 @@ color:var(--text);border-radius:8px;padding:6px 12px;cursor:pointer;font-size:13
 <body>
 <button id="themeBtn" title="Toggle theme">◐</button>
 <div class="wrap">
-<h1>Sinbar <span class="n">Growth Engine</span> <span class="n" style="color:var(--high)">LIVE</span></h1>
-<div class="sub">Public-sector procurement pipeline (Module A live; Modules B–E commercial leads load as researched) ·
-<span id="scannedTxt">awaiting first refresh</span> · click headers to sort · type to search · cards &amp; chips filter · auto-reloads every 5 min</div>
-<div class="summary" id="summary"></div>
-<div id="nodata" style="display:none;background:var(--panel);border:1px solid var(--low);border-radius:8px;padding:10px 14px;margin-bottom:14px;color:var(--low);font-weight:600">No data loaded — run refresh.ps1 (or double-click the launcher) to generate data.js, then reload this page.</div>
+<h1>Sinbar <span class="n">Lead &amp; Procurement Intelligence</span> <span class="n" style="color:var(--high)">LIVE</span></h1>
+<div class="sub">Five search tracks · six views · stable record IDs · CSV export ·
+<span id="scannedTxt">awaiting first refresh</span> · click headers to sort · cards &amp; chips filter · auto-reloads every 5 min</div>
+<div id="nodata" style="display:none;background:var(--panel);border:1px solid var(--low);border-radius:8px;padding:10px 14px;margin-bottom:14px;color:var(--low);font-weight:600">No data loaded — run refresh.ps1 (or the daily task) to generate data.js, then reload this page.</div>
 <div class="tabs">
-<button class="tab on" data-tab="opps">Procurement Opportunities</button>
-<button class="tab" data-tab="leads">Commercial Leads</button>
+<button class="tab on" data-view="overview">Overview</button>
+<button class="tab" data-view="ranked">Ranked Leads</button>
+<button class="tab" data-view="procurement">Procurement</button>
+<button class="tab" data-view="evidence">Evidence</button>
+<button class="tab" data-view="outreach">Outreach</button>
+<button class="tab" data-view="changes">Changes</button>
 </div>
 <div class="controls">
-<input id="search" type="search" placeholder="Search title, agency, scope, location…">
+<div class="ctlrow">
+<input id="search" type="search" placeholder="Search title, agency, scope, location, evidence…">
+<button id="csvBtn" title="Export current view to CSV">⬇ Export CSV</button>
+</div>
 <div class="filterrow" id="filterrow"></div>
 </div>
-<div class="tablebox">
-<table><thead><tr id="theadRow"></tr></thead><tbody id="tbody"></tbody></table>
-</div>
-<div class="foot">Showing <span id="count"></span> of <span id="totalN">0</span> opportunities · <span id="scannedFoot">awaiting first refresh</span> · <span id="srcNote">—</span></div>
+<div id="viewbox"></div>
+<div class="foot">Showing <span id="count">0</span> records · <span id="totalN">0</span> total ·
+<span id="chgNote">—</span> · <span id="srcNote">—</span></div>
 </div>
 <script src="data.js"></script>
 <script>
 let OPPS = window.SINBAR_OPPS || [];
-let LEADS = window.SINBAR_LEADS || [];
 let META = window.SINBAR_META || {};
-const TODAY = (() => { const d = new Date(); d.setHours(23, 59, 59, 999); return d; })();
-const state = {q:"", level:new Set(), band:new Set(), tab:"opps", sortKey:"due", sortDir:1};
-let LEVELS=[], statEls=[];
-const CONFS=["high","medium","low"];
+const TODAY = (() => { const d = new Date(); d.setHours(23,59,59,999); return d; })();
+const TODAYSTR = (() => { const d = new Date();
+  return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0"); })();
+const state = {view:"overview", q:"", track:new Set(), geo:new Set(), sector:new Set(),
+  status:new Set(), band:new Set(), trigger:new Set(), ostatus:new Set(), sortKey:null, sortDir:1};
 
-const OPP_COLS=[
- {k:"score",h:"Score"},{k:"due_date",h:"Due"},{k:"agency",h:"Agency / Issuer"},
- {k:"title",h:"Opportunity"},{k:"level",h:"Level"},{k:"location",h:"Location"},
- {k:"sinbar_fit",h:"Sinbar fit"},{k:"next_action",h:"Next action"},{k:"notes",h:"Notes"}];
-const LEAD_COLS=[
- {k:"score",h:"Score"},{k:"trigger",h:"Trigger"},{k:"name",h:"Name"},{k:"segment",h:"Segment"},
- {k:"region",h:"Region"},{k:"owner_mgmt",h:"Owner / Mgmt"},{k:"decision_maker",h:"Decision-maker"},
- {k:"phone",h:"Phone"},{k:"email_status",h:"Email status"},{k:"evidence",h:"Evidence"},
- {k:"sinbar_angle",h:"Sinbar angle"},{k:"outreach_status",h:"Outreach"}];
+const COLS = {
+ ranked:[{k:"score",h:"Score"},{k:"title",h:"Name"},{k:"location",h:"Location"},{k:"sector",h:"Sector"},
+  {k:"trigger",h:"Verified trigger"},{k:"sinbar_fit",h:"Sinbar angle"},{k:"contact",h:"Contact route"},
+  {k:"status",h:"Status"},{k:"next_action",h:"Next action"}],
+ procurement:[{k:"agency",h:"Agency"},{k:"solicitation_number",h:"Solicitation #"},{k:"due",h:"Deadline & TZ"},
+  {k:"amend",h:"Amendments"},{k:"qualifications",h:"Eligibility / Qualifications"},{k:"url",h:"Bid link"},
+  {k:"risks",h:"Risk"},{k:"sinbar_fit",h:"Fit"},{k:"owner",h:"Next-step owner"}],
+ evidence:[{k:"record",h:"Record"},{k:"source",h:"Source link"},{k:"obs",h:"Observation date"},
+  {k:"summary",h:"Evidence summary"},{k:"verified",h:"Verification date"},{k:"conf",h:"Confidence"}],
+ outreach:[{k:"record",h:"Record"},{k:"recipient",h:"Recipient"},{k:"subject",h:"Subject"},
+  {k:"sender",h:"Sender identity"},{k:"result",h:"Send result"},{k:"sent",h:"Date/time"},
+  {k:"next_followup",h:"Next follow-up"},{k:"exception",h:"Exception reason"}],
+ changes:[{k:"record",h:"Record"},{k:"track",h:"Track"},{k:"state",h:"State"},{k:"event",h:"Latest event"},
+  {k:"edate",h:"Event date"},{k:"updated",h:"Updated"},{k:"url",h:"Link"}]
+};
 
-function chip(label,on,cb){const b=document.createElement("button");b.className="chip"+(on?" on":"");
-b.textContent=label;b.onclick=()=>{cb(b);syncUI()};return b}
+function el(tag,cls,txt){const e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e}
+function daysLeft(s){if(!s)return null;const d=new Date(s+"T23:59:59");return Math.floor((d-TODAY)/86400000)}
+function labels(d){const out=[],s=d.status||{};
+ if(s.ready)out.push("Outreach Ready");if(s.research)out.push("Research Needed");if(s.pain)out.push("Verified Wi-Fi Pain");
+ if(!out.length)out.push("Research Needed");return out}
+function route(d){return d.contact_email?("Published email: "+d.contact_email):(d.contact||"Not published")}
+function changesOf(d){return (d.changes||[]).filter(Boolean).slice().sort((a,b)=>(a.date<b.date?-1:a.date>b.date?1:0))}
+function latestEvent(d){const c=changesOf(d);return c.length?c[c.length-1]:{date:d.first_seen||"",event:"Record created"}}
+function changeState(d){const c=changesOf(d);if(!c.length)return "Unchanged";
+ return /^New/i.test(c[c.length-1].event||"")?"New":"Updated"}
+function amendments(d){const c=changesOf(d).filter(x=>/amendment/i.test(x.event||""));
+ return c.length?c.map(x=>x.date+": "+x.event).join(" | "):"None"}
 
-function daysLeft(dstr){if(!dstr)return null;const d=new Date(dstr+"T23:59:59");return Math.floor((d-TODAY)/86400000)}
-
-function currentRows(){
- const arr=state.tab==="opps"?OPPS:LEADS;
- return arr.filter(d=>{
-  if(state.level.size&&!state.level.has(state.tab==="opps"?d.level:d.segment))return false;
-  if(state.band.size){
-   let ok=false;
+function baseRows(){
+ return OPPS.filter(d=>{
+  if(state.track.size&&!state.track.has(d.track||"procurement"))return false;
+  if(state.geo.size&&!state.geo.has(d.location||d.jurisdiction||"—"))return false;
+  if(state.sector.size&&!state.sector.has(d.sector||d.level||"—"))return false;
+  if(state.status.size&&!labels(d).some(l=>state.status.has(l)))return false;
+  if(state.band.size){let ok=false;
    if(state.band.has("85+")&&d.score>=85)ok=true;
    if(state.band.has("70-84")&&d.score>=70&&d.score<85)ok=true;
-   if(state.band.has("Due≤7d")&&daysLeft(d.due_date||d.due)!=null&&daysLeft(d.due_date||d.due)>=0&&daysLeft(d.due_date||d.due)<=7)ok=true;
-   if(!ok)return false;
-  }
-  if(state.q){const hay=Object.keys(d).map(k=>String(d[k]||"")).join(" ").toLowerCase();if(!hay.includes(state.q))return false}
-  return true}).sort((a,b)=>{
-  const k=state.sortKey==="due"?(state.tab==="opps"?"due_date":"due"):state.sortKey;
-  const x=a[k]||"9999-12-31",y=b[k]||"9999-12-31";
-  if(k==="score"){const nx=Number(x)||0,ny=Number(y)||0;return (nx-ny)*state.sortDir}
-  return (x<y?-1*state.sortDir:x>y?1*state.sortDir:0);
- });
+   const dl=daysLeft(d.due_date);
+   if(state.band.has("Due≤14d")&&dl!=null&&dl>=0&&dl<=14)ok=true;
+   if(!ok)return false}
+  if(state.trigger.size&&!state.trigger.has(d.trigger||"Open solicitation"))return false;
+  if(state.ostatus.size){
+   const o=(d.outreach||[]).filter(Boolean);
+   const st=o.length?"Contacted":((d.contact_email||d.contact)?"Contact available":"No route");
+   if(!state.ostatus.has(st))return false}
+  if(state.q){const hay=Object.keys(d).map(k=>{const v=d[k];
+   return (v&&typeof v==="object")?JSON.stringify(v):String(v==null?"":v)}).join(" ").toLowerCase();
+   if(!hay.includes(state.q))return false}
+  return true});
 }
 
-function buildHead(){
- const tr=document.getElementById("theadRow");tr.replaceChildren();
- (state.tab==="opps"?OPP_COLS:LEAD_COLS).forEach(c=>{
-  const th=document.createElement("th");th.textContent=c.h;
-  const ar=document.createElement("span");ar.className="arrow";
-  if(state.sortKey===c.k)ar.textContent=state.sortDir===1?"▲":"▼";
-  th.appendChild(ar);th.onclick=()=>{const k=c.k;
-   if(state.sortKey===k)state.sortDir*=-1;else{state.sortKey=k;state.sortDir=1}
-   buildHead();render()};tr.appendChild(th)});
+function rowsFor(view){
+ const base=baseRows();
+ if(view==="ranked")return base.map(d=>({score:d.score,title:d.title,location:d.location||d.jurisdiction||"—",
+   sector:d.sector||d.level||"—",trigger:d.trigger||"Open solicitation",sinbar_fit:d.sinbar_fit||"",
+   contact:route(d),status:labels(d),next_action:d.next_action||"",_d:d}))
+  .sort((a,b)=>b.score-a.score);
+ if(view==="procurement")return base.filter(d=>(d.track||"procurement")==="procurement")
+  .map(d=>({agency:d.agency||"",solicitation_number:d.solicitation_number||"",due:d.due_date||"Not published",
+   due_days:daysLeft(d.due_date),amend:amendments(d),qualifications:d.qualifications||"Not published",
+   url:d.url||"",risks:d.risks||"Not published",sinbar_fit:d.sinbar_fit||"",
+   owner:d.action_owner||"Sinbar (Martin)",_d:d}))
+  .sort((a,b)=>String(a.due).localeCompare(String(b.due)));
+ if(view==="evidence"){const out=[];
+  base.forEach(d=>((d.evidence||[]).filter(Boolean)).forEach(e=>out.push({record:d.title,
+   source:e.url||d.url||"",obs:e.date||"",summary:e.summary||"",
+   verified:d.updated_at||d.first_seen||"",conf:e.confidence||"—",_d:d})));return out}
+ if(view==="outreach"){const out=[];
+  base.forEach(d=>((d.outreach||[]).filter(Boolean)).forEach(e=>out.push({record:d.title,
+   recipient:e.recipient||"",subject:e.subject||"",sender:e.sender||"",result:e.result||"",
+   sent:e.date||"",next_followup:e.next_followup||"—",exception:e.exception_reason||"",_d:d})));return out}
+ if(view==="changes")return base.map(d=>{const le=latestEvent(d);
+   return{record:d.title,track:d.track||"procurement",state:changeState(d),event:le.event,
+    edate:le.date,updated:d.updated_at||d.first_seen||"",url:d.url||"",_d:d}})
+  .sort((a,b)=>String(b.edate||"").localeCompare(String(a.edate||"")));
+ return [];
 }
 
-function cell(inner,cls){const c=document.createElement("td");if(cls_(c,cls))0;c.className=cls||"";c.append(inner);return c}
-function cls_(){} // no-op
-function td(cls,inner){const c=document.createElement("td");if(cls)c.className=cls;c.append(inner);return c}
-
-function render(){
- const r=currentRows();
- document.getElementById("count").textContent=r.length;
- const tb=document.getElementById("tbody");tb.replaceChildren();
- r.forEach(d=>{
-  const tr=document.createElement("tr");
-  const dueRaw=state.tab==="opps"?d.due_date:(d.due||d.due_date);
-  const dl=daysLeft(dueRaw);
-  const dueDiv=document.createElement("div");dueDiv.textContent=dueRaw||"—";
-  const sub=document.createElement("div");sub.className="cat";
-  if(dl!=null){sub.textContent=dl<0?"PAST DUE":(dl+" days left");dueDiv.classList.add(dl<=7?"due-soon":"due-ok")}
-  dueDiv.appendChild(sub);
-  const sc=document.createElement("span");sc.className="sc "+(d.score>=85?"sc-hi":d.score>=70?"sc-md":"sc-lo");sc.textContent=d.score;
-  if(state.tab==="opps"){
-   tr.appendChild(td("sc",sc));
-   tr.appendChild(td("due",dueDiv));
-   const ag=document.createElement("div");ag.textContent=d.agency||"";
-   const j=document.createElement("div");j.className="cat";j.textContent=(d.level||"")+" · "+(d.jurisdiction||"");ag.appendChild(j);
-   tr.appendChild(td(null,ag));
-   const tt=document.createElement("div");tt.textContent=d.title;
-   const sn=document.createElement("div");sn.className="cat";sn.textContent=d.solicitation_number||"";tt.appendChild(sn);
-   tr.appendChild(td("tt",tt));
-   tr.appendChild(td(null,d.location||""));
-   const fit=document.createElement("div");fit.textContent=d.sinbar_fit||"";
-   const na=document.createElement("div");na.className="cat";na.textContent=d.next_action||"";fit.appendChild(na);
-   tr.appendChild(td(null,fit));
-   tr.appendChild(td(null,d.notes||""));
-  }else{
-   tr.appendChild(td("sc",sc));
-   tr.appendChild(td(null,d.trigger||""));
-   tr.appendChild(td("tt",d.name||""));
-   tr.appendChild(td(null,d.segment||""));
-   tr.appendChild(td(null,d.region||""));
-   tr.appendChild(td(null,d.owner_mgmt||""));
-   tr.appendChild(td(null,d.decision_maker||""));
-   tr.appendChild(td(null,d.phone||""));
-   tr.appendChild(td(null,d.email_status||""));
-   tr.appendChild(td(null,d.evidence||""));
-   tr.appendChild(td(null,d.sinbar_angle||""));
-   tr.appendChild(td(null,d.outreach_status||""));
-  }
-  tb.appendChild(tr)});
+function cellFor(k,row,view){
+ const td=document.createElement("td");
+ if(k==="score"){const s=el("span","sc "+(row.score>=85?"sc-hi":row.score>=70?"sc-md":"sc-lo"),String(row.score));td.appendChild(s)}
+ else if(k==="status"){row.status.forEach(l=>td.appendChild(el("span","badge "+
+  (l==="Outreach Ready"?"bg-ready":l==="Verified Wi-Fi Pain"?"bg-pain":"bg-research"),l)))}
+ else if(k==="state"){td.appendChild(el("span","badge "+
+  (row.state==="New"?"bg-new":row.state==="Updated"?"bg-updated":"bg-unchanged"),row.state))}
+ else if((k==="url"||k==="source")&&row[k]){
+  const a=document.createElement("a");a.href=row[k];a.target="_blank";a.rel="noopener";
+  a.textContent=(view==="evidence"?"Open source":"Open")+" ↗";td.appendChild(a)}
+ else if(k==="due"){const dv=el("div","",String(row.due));
+  const sub=el("div","cat",row.due_days!=null?(row.due_days<0?"PAST DUE":row.due_days+" days left"):"TZ: Not published");
+  if(row.due_days!=null)dv.classList.add(row.due_days<=14?"due-soon":"due-ok");
+  dv.appendChild(sub);td.appendChild(dv)}
+ else if(k==="record"){td.className="tt";
+  const a=document.createElement("a");a.href=(row._d&&row._d.url)||"#";a.target="_blank";a.rel="noopener";
+  a.textContent=row.record||"—";td.appendChild(a);
+  const sub=el("div","cat",(row._d&&row._d.id)?row._d.id:"");td.appendChild(sub)}
+ else if(row[k]===undefined||row[k]===""||row[k]==null){td.innerHTML="";td.appendChild(el("span","np","Not published"))}
+ else td.textContent=String(row[k]);
+ return td;
 }
 
-function buildSummary(){
- LEVELS=[...new Set(OPPS.map(r=>r.level))];
- const sm=document.getElementById("summary");sm.replaceChildren();
- statEls=[];
- const due7=OPPS.filter(d=>{const dl=daysLeft(d.due_date);return dl!=null&&dl>=0&&dl<=7}).length;
- const stats=[["Total opportunities",OPPS.length,null],
-  ["Outreach-ready 85+",OPPS.filter(d=>d.score>=85).length,{kind:"band",val:"85+"}],
-  ["Due ≤7 days",due7,{kind:"band",val:"Due≤7"}],
-  ["Emails sent",(META&&META.emailsSent)||0,null]];
- stats.forEach(([l,v,act])=>{const s=document.createElement("div");s.className="stat"+(act?" click":"");
-  s.onclick=()=>{if(!act){state.band.clear();state.level.clear();state.q="";document.getElementById("search").value="";syncUI();return}
-   state.band.has(act.val)?state.band.delete(act.val):state.band.add(act.val);syncUI()};
-  const b=document.createElement("b");b.textContent=v;const t=document.createElement("span");t.textContent=l;
-  s.appendChild(b);s.appendChild(t);sm.appendChild(s);
-  if(act)statEls.push([s,act])});
+function renderView(){
+ const vb=document.getElementById("viewbox");vb.replaceChildren();
+ if(state.view==="overview"){renderOverview(vb);return}
+ const rows=rowsFor(state.view),cols=COLS[state.view];
+ document.getElementById("count").textContent=rows.length;
+ if(!rows.length){vb.appendChild(el("div","noresults","No verified results"));return}
+ const box=el("div","tablebox"),t=el("table"),thead=el("thead"),hr=el("tr");
+ cols.forEach(c=>{
+  const th=el("th",null,c.h);
+  const ar=el("span","arrow",state.sortKey===c.k?(state.sortDir===1?"▲":"▼"):"");
+  th.appendChild(ar);
+  th.onclick=()=>{if(state.sortKey===c.k)state.sortDir*=-1;else{state.sortKey=c.k;state.sortDir=1}renderView()};
+  hr.appendChild(th)});
+ thead.appendChild(hr);t.appendChild(thead);
+ const tb=el("tbody");
+ rows.forEach(r=>{const tr=el("tr");
+  cols.forEach(c=>tr.appendChild(cellFor(c.k,r,state.view)));tb.appendChild(tr)});
+ t.appendChild(tb);box.appendChild(t);vb.appendChild(box);
 }
-function syncUI(){
+
+function renderOverview(vb){
+ document.getElementById("count").textContent=OPPS.length;
+ const proc=OPPS.filter(d=>(d.track||"procurement")==="procurement");
+ const dl14=OPPS.filter(d=>{const x=daysLeft(d.due_date);return x!=null&&x>=0&&x<=14})
+  .sort((a,b)=>String(a.due_date).localeCompare(String(b.due_date)));
+ const withC=OPPS.filter(d=>d.contact_email).length;
+ const cov=OPPS.length?Math.round(100*withC/OPPS.length):0;
+ let sent=0,follow=0;
+ OPPS.forEach(d=>((d.outreach||[]).filter(Boolean)).forEach(e=>{
+  if(e.result==="sent")sent++;
+  if(e.next_followup&&String(e.next_followup)<=TODAYSTR)follow++}));
+ const m=META||{};
+ const cards=[
+  ["New leads",m.changeNew!=null?m.changeNew:0],
+  ["High-priority 85+",OPPS.filter(d=>d.score>=85).length],
+  ["Open bids",proc.length],
+  ["Deadlines ≤14d",dl14.length],
+  ["Verified contact coverage",(m.contactCoverage!=null?m.contactCoverage:cov)+"%"+" ("+withC+" of "+OPPS.length+")"],
+  ["Emails sent",m.emailsSent!=null?m.emailsSent:sent],
+  ["Follow-ups due",m.followupsDue!=null?m.followupsDue:follow]];
+ const sm=el("div","summary");
+ cards.forEach(([l,v])=>{const s=el("div","stat");s.appendChild(el("b",null,String(v)));
+  s.appendChild(el("span",null,l));sm.appendChild(s)});
+ vb.appendChild(sm);
+ const p1=el("div","panel");p1.appendChild(el("h3",null,"Deadlines in the next 14 days"));
+ if(!dl14.length)p1.appendChild(el("div","muted","No verified results"));
+ dl14.forEach(d=>{const r=el("div","prow");
+  r.appendChild(el("span","psc",String(d.score)));
+  r.appendChild(el("span","tt ptitle",d.title||d.agency||"—"));
+  r.appendChild(el("span","pmeta",(d.due_date||"")+" · "+(d.agency||"")));
+  p1.appendChild(r)});
+ vb.appendChild(p1);
+ const top=OPPS.slice().sort((a,b)=>b.score-a.score).slice(0,10);
+ const p2=el("div","panel");p2.appendChild(el("h3",null,"Top ranked leads"));
+ if(!top.length)p2.appendChild(el("div","muted","No verified results"));
+ top.forEach(d=>{const r=el("div","prow");
+  r.appendChild(el("span","psc",String(d.score)));
+  r.appendChild(el("span","tt ptitle",d.title||"—"));
+  r.appendChild(el("span","pmeta",labels(d).join(" · ")+" · "+(d.location||d.jurisdiction||"")));
+  p2.appendChild(r)});
+ vb.appendChild(p2);
+}
+
+function buildFilters(){
  const fr=document.getElementById("filterrow");fr.replaceChildren();
- const mk=(labelText,vals,set,toggle)=>{const g=document.createElement("div");g.className="fgroup";
-  const l=document.createElement("span");l.className="flabel";l.textContent=labelText;fr.appendChild(l);
-  vals.forEach(v=>fr.appendChild(chip(v,set.has(v),b=>{b.classList.contains("on")?set.add(v):set.delete(v)})))};
- mk("Level",LEVELS,state.level);
- mk("Score",["85+","70-84","Due≤7"],state.band);
- const g=document.createElement("div");g.className="fgroup";
- const l=document.createElement("span");l.className="flabel";l.textContent="Reset";fr.appendChild(l);
- const rb=document.createElement("button");rb.className="chip";rb.textContent="✕ clear all";
- rb.onclick=()=>{state.band.clear();state.level.clear();state.q="";document.getElementById("search").value="";syncUI()};
- fr.appendChild(rb);
- statEls.forEach(([el,act])=>el.classList.toggle("on",state.band.has(act.val)));
- render();
+ const uniq=(fn,cap)=>{const m={};OPPS.forEach(d=>{const v=fn(d)||"—";m[v]=(m[v]||0)+1});
+  return Object.keys(m).sort((a,b)=>m[b]-m[a]).slice(0,cap)};
+ const group=(label,vals,set)=>{
+  const g=el("div","fgroup");g.appendChild(el("span","flabel",label));
+  vals.forEach(v=>{const b=el("button","chip"+(set.has(v)?" on":""),v);
+   b.onclick=()=>{set.has(v)?set.delete(v):set.add(v);b.classList.toggle("on");renderView()};
+   g.appendChild(b)});
+  fr.appendChild(g)};
+ group("Track",uniq(d=>d.track||"procurement",8),state.track);
+ group("Geography",uniq(d=>d.location||d.jurisdiction,12),state.geo);
+ group("Sector",uniq(d=>d.sector||d.level,10),state.sector);
+ group("Status",["Outreach Ready","Research Needed","Verified Wi-Fi Pain"],state.status);
+ group("Score",["85+","70-84","Due≤14d"],state.band);
+ group("Trigger",uniq(d=>d.trigger||"Open solicitation",8),state.trigger);
+ group("Outreach",["Contacted","Contact available","No route"],state.ostatus);
+ const g=el("div","fgroup");g.appendChild(el("span","flabel","Reset"));
+ const rb=el("button","chip","✕ clear all");
+ rb.onclick=()=>{[state.track,state.geo,state.sector,state.status,state.band,state.trigger,state.ostatus]
+  .forEach(s=>s.clear());state.q="";document.getElementById("search").value="";
+  buildFilters();renderView()};
+ g.appendChild(rb);fr.appendChild(g);
 }
-function mk(){/* replaced below */}
+
+function exportCSV(){
+ const view=state.view==="overview"?"ranked":state.view;
+ const rows=rowsFor(view),cols=COLS[view];
+ const esc=v=>{v=String(v==null?"":v);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v};
+ const lines=[cols.map(c=>c.h).join(",")];
+ rows.forEach(r=>lines.push(cols.map(c=>esc(Array.isArray(r[c.k])?r[c.k].join("; "):r[c.k])).join(",")));
+ const blob=new Blob([lines.join("\r\n")],{type:"text/csv"});
+ const a=document.createElement("a");a.href=URL.createObjectURL(blob);
+ a.download="sinbar-"+view+"-"+TODAYSTR+".csv";
+ document.body.appendChild(a);a.click();a.remove();
+}
+
 function updateMeta(){
  const m=META||{};
  const when=m.scanned?("scanned "+m.scanned):"awaiting first refresh";
  document.getElementById("scannedTxt").textContent=when;
- document.getElementById("scannedFoot").textContent=when;
  document.getElementById("totalN").textContent=OPPS.length;
  document.getElementById("nodata").style.display=OPPS.length?"none":"block";
- let src="live: SAM.gov ×"+(m.samNew!=null?m.samNew:0)+" · USAC ×"+(m.usacNew!=null?m.usacNew:0)+" · NY/NJ/CT pipeline";
+ let chg=m.lastRun?("run "+m.lastRun+": +"+(m.changeNew||0)+" new · ~"+(m.changeUpdated||0)+
+  " updated · ="+(m.changeUnchanged||0)+" unchanged"):"—";
+ if(m.changeDuplicate)chg+=" · "+m.changeDuplicate+" duplicates skipped";
+ document.getElementById("chgNote").textContent=chg;
+ let src="live: SAM.gov ×"+(m.samNew!=null?m.samNew:0)+" · USAC ×"+(m.usacNew!=null?m.usacNew:0);
  if(m.samError)src+=" · ⚠ SAM.gov: "+String(m.samError).slice(0,100);
  if(m.usacError)src+=" · ⚠ USAC: "+String(m.usacError).slice(0,90);
  document.getElementById("srcNote").textContent=src;
 }
+
 function init(){
- document.getElementById("search").addEventListener("input",e=>{state.q=e.target.value.toLowerCase().trim();render()});
+ document.getElementById("search").addEventListener("input",e=>{
+  state.q=e.target.value.toLowerCase().trim();renderView()});
  document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{
   document.querySelectorAll(".tab").forEach(x=>x.classList.remove("on"));
-  t.classList.add("on");state.tab=t.dataset.tab;state.sortKey="due";state.sortDir=1;
-  buildHead();buildSummary();syncUI()});
+  t.classList.add("on");state.view=t.dataset.view;state.sortKey=null;state.sortDir=1;
+  renderView()});
+ document.getElementById("csvBtn").onclick=exportCSV;
  const tBtn=document.getElementById("themeBtn");
  tBtn.onclick=()=>{const cur=document.documentElement.dataset.theme||"dark";
   const next=cur==="dark"?"light":"dark";document.documentElement.dataset.theme=next;
@@ -242,9 +343,9 @@ function init(){
  try{const t=localStorage.getItem("sinbar-theme");if(t)document.documentElement.dataset.theme=t}catch(e){}
  setInterval(()=>{const s=document.createElement("script");s.src="data.js?ts="+Date.now();
   s.onload=()=>{OPPS=window.SINBAR_OPPS||OPPS;META=window.SINBAR_META||META;
-   buildSummary();syncUI();updateMeta()};
+   buildFilters();renderView();updateMeta()};
   document.head.appendChild(s)},300000);
- buildHead();buildSummary();syncUI();updateMeta();
+ buildFilters();renderView();updateMeta();
 }
 init();
 </script>
