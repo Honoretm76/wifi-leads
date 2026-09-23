@@ -135,7 +135,10 @@ function route(d){return d.contact_email?("Published email: "+d.contact_email):(
 function changesOf(d){return (d.changes||[]).filter(Boolean).slice().sort((a,b)=>(a.date<b.date?-1:a.date>b.date?1:0))}
 function latestEvent(d){const c=changesOf(d);return c.length?c[c.length-1]:{date:d.first_seen||"",event:"Record created"}}
 function changeState(d){const c=changesOf(d);if(!c.length)return "Unchanged";
- return /^New/i.test(c[c.length-1].event||"")?"New":"Updated"}
+ const ev=c[c.length-1].event||"";
+ if(/^New/i.test(ev))return "New";
+ if(c.length===1&&/^Record created/i.test(ev))return "Unchanged";
+ return "Updated"}
 function amendments(d){const c=changesOf(d).filter(x=>/amendment/i.test(x.event||""));
  return c.length?c.map(x=>x.date+": "+x.event).join(" | "):"None"}
 
